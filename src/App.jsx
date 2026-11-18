@@ -1,30 +1,31 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
-import Test from './test/test'
+import React from 'react'
 
 
 function App() {
-  function Form() {
+  const [count, setCount] = React.useState(0)
+
+  function Kuponi(props) {
     return (
       <>
-       <p className='bg-blue-500 text-white p-2'>Dijete</p>
+        <p className='bg-blue-500 text-white p-2'>kuponi</p>
+        <input type="text" className='border-2 border-black p-2' value={props.ukupno} onChange={(e) => setCount(Number(e.target.value))} />
       </>
     )
   }
-  function Dijete() {
+function Total(props) {
     return (
-      <p>dijete</p>
+      <>
+        <p className='bg-green-500 text-white p-2'>Total</p>
+        <input type="text" className='border-2 border-black p-2' value={props.ukupno} onChange={(e) => setCount(Number(e.target.value))} />
+      </>
     )
   }
 
   return (
     <>
-      <Form />
-      {/* <Test /> */}
-
+      <Kuponi ukupno={count} />
+      <Total ukupno={count} />
     </>
   )
 }
