@@ -1,40 +1,33 @@
 import './App.css'
 import React from 'react'
-
+import { Kuponi } from './Kuponi'
+import { Total } from './Total'
+import { useEffect } from 'react'
 
 function App() {
   const [count, setCount] = React.useState(0)
+  const [kuponi, setKuponi] = React.useState(() => {
+    const sacuvaniKuponi = localStorage.getItem('kuponi')
+    return sacuvaniKuponi ? JSON.parse(sacuvaniKuponi) : []
+  })
+  const total = kuponi.reduce((zbir, vrijednost) => zbir + vrijednost, 0)
 
-  function Kuponi(props) {
-    return (
-      <div className='bg-blue-500 p-4'>
-        <p className='text-white p-2'>kuponi</p>
-        <input type="text" className='bg-white text-black border-2 border-black p-2' value={props.ukupno} onChange={(e) => setCount(Number(e.target.value))} />
-  <button className='bg-blue-500 text-white p-2' onClick={() => setCount(count + 1)}>+</button>
-       <button className='bg-blue-500 text-white p-2' onClick={() => setCount(count - 1)}>-</button>
+  useEffect(() => {
+    localStorage.setItem('kuponi', JSON.stringify(kuponi))
+  }, [kuponi])
 
-      </div>
-    )
-  }
-function Total(props) {
-    return (
-      <div className='bg-green-500 p-4'>
-        <p className='text-white p-2'>Total</p>
-        <input type="text" className='bg-white text-black border-2 border-black p-2' value={props.ukupno} onChange={(e) => setCount(Number(e.target.value))} />
-      </div>
-    )
+  function dodajKupone() {
+    setKuponi((prethodniKuponi) => [...prethodniKuponi, count])
+    setCount(0)
   }
 
   return (
     <div className='min-h-svh bg-red-500'>
-      <div className='bg-red-500 text-white p-2'>App</div>
-      {/* <input type="text" className='border-2 border-black p-2' value={count} onChange={(e) => setCount(Number(e.target.value))} /> */}
-      {/* <button className='bg-blue-500 text-white p-2' onClick={() => setCount(count + 1)}>+</button>
-       <button className='bg-blue-500 text-white p-2' onClick={() => setCount(count - 1)}>-</button>
-      <Kuponi ukupno={count} /> */}
-      <Kuponi ukupno={count} />
-      <Total ukupno={count} />
-      
+      <div className='bg-red-500 text-white p-2'>Roditeljski App</div>
+      <Kuponi trenutnoUnos={count} onChange={setCount} onAdd={dodajKupone} />
+      <Total ukupno={total} />
+
+      <p className='bg-red-500 text-white p-2'>Roditeljski App</p>
     </div>
   )
 }
